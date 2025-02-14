@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Którym Smokiem Jesteś?</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Montserrat:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-size: 18px;
+        background: url("https://smokiayatee.pl/wp-content/uploads/2024/12/background.png")
+          repeat center center fixed;
+        background-size: cover;
+        color: #ffffff;
+        font-family: "Montserrat", sans-serif;
+        height: 100vh;
+      }
+      .button {
+        font-size: 16px;
+        background-color: #eba85b;
+        color: #ffffff;
+        border-radius: 12px;
+      }
+      .box {
+        border: 4px solid #222f38;
+        padding: 20px;
+        background-color: #1c272e;
+        border-radius: 0;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        transition: transform 0.3s ease-in-out;
+      }
+      .notification {
+        border: 4px solid #bf8d51;
+        background-color: #1c272e;
+        position: relative;
+        font-family: "Kalam", cursive;
+        font-size: 24px;
+      }
+
+      .notification h1 {
+        font-size: 40px;
+        font-weight: bold;
+        margin-top: -60px;
+        /* 4px border/sharow in #bf8d51 */
+        -webkit-text-stroke: 2px #bf8d51;
+      }
+      .logo {
+        display: block;
+        margin: 0 auto 20px;
+        width: 50%;
+      }
+      .start-button {
+        margin-top: 20px;
+        background-color: #eba85b;
+        color: #ffffff;
+        border-radius: 12px;
+      }
+
+      #result-dragon {
+        font-size: 40px;
+        font-weight: bold;
+        text-align: center;
+      }
+
+      .fade-out {
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+      }
+      .fade-in {
+        opacity: 1;
+        transition: opacity 0.3s ease-in-out;
+      }
+
+      .button {
+        width: 100%;
+        font-size: large;
+        font-weight: 700;
+      }
+
+      #question {
+        text-align: center;
+        font-size: large;
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="section">
+      <div class="container">
+        <img
+          src="https://smokiayatee.pl/wp-content/uploads/2024/12/Smoki-Ayatee_4x-1024x539.png"
+          alt="Logo"
+          class="logo"
+        />
+        <div id="intro">
+          <div class="notification">
+            <h1>Cześć!</h1>
+            <p>
+              Jestem Ayatee i jak się pewnie domyślacie, uwielbiam smoki! Jako
+              że sama odkryłam w sobie pierwiastek smoczości dosyć późno, wierzę
+              że każdy w duchu jest jakimś smokiem! Jakim jesteś Ty?
+            </p>
+          </div>
+          <button id="start-quiz" class="button start-button">
+            Którym smokiem jesteś?
+          </button>
+        </div>
+        <div id="quiz-container" class="box p-5 is-hidden">
+          <div id="question" class="content mb-4"></div>
+          <div id="answers" class="buttons"></div>
+        </div>
+        <div id="result" class="is-hidden p-5">
+          <p id="result-dragon"></p>
+          <div class="notification">
+            <h1>Brawo!</h1>
+            <p>
+              Wiedziałam! Fragment smoka drzemał w Tobie od zawsze! Może
+              spotkamy się kiedyś w przestworzach?
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      const questions = [
+        { question: "Ulubiony czas dnia?", answers: ["Noc", "Dzień"] },
+        {
+          question: "Gdzie czujesz się najlepiej?",
+          answers: [
+            "Kosmos",
+            "Las",
+            "Góry",
+            "Biblioteka",
+            "Woda",
+            "Pustynia",
+            "Bagna",
+            "Lodowiec",
+          ],
+        },
+        {
+          question: "Co cenisz najbardziej?",
+          answers: [
+            "Mądrość",
+            "Siła",
+            "Magia",
+            "Opiekuńczość",
+            "Zabawa",
+            "Tajemnica",
+            "Dominacja",
+            "Wytrwałość",
+          ],
+        },
+        {
+          question: "Jakie emocje Cię napędzają?",
+          answers: [
+            "Spokój",
+            "Gniew",
+            "Radość",
+            "Ambicja",
+            "Manipulacja",
+            "Przetrwanie",
+            "Władza",
+            "Rozmowa",
+          ],
+        },
+      ];
+
+      const results = {
+        "Kosmiczny smok": ["Noc", "Kosmos", "Magia", "Spokój"],
+        "Smok Księżyca": ["Noc", "Woda", "Tajemnica", "Cierpliwość"],
+        "Bursztynowy smok": ["Dzień", "Las", "Opiekuńczość", "Radość"],
+        "Smok Liści": ["Dzień", "Las", "Zabawa", "Radość"],
+        "Smok Duchowy": ["Noc", "Biblioteka", "Mądrość", "Spokój"],
+        "Szkieletowy smok": ["Noc", "Góry", "Siła", "Gniew"],
+        "Złoty smok": ["Dzień", "Góry", "Mądrość", "Opiekuńczość"],
+        "Srebrny smok": ["Dzień", "Woda", "Opiekuńczość", "Spokój"],
+        "Miedziany smok": ["Dzień", "Góry", "Zabawa", "Radość"],
+        "Brązowy smok": ["Dzień", "Pustynia", "Wytrwałość", "Ambicja"],
+        "Mosiężny smok": ["Dzień", "Pustynia", "Rozmowa", "Radość"],
+        "Czerwony smok": ["Dzień", "Góry", "Władza", "Gniew"],
+        "Czarny smok": ["Noc", "Bagna", "Manipulacja", "Tajemnica"],
+        "Zielony smok": ["Dzień", "Las", "Manipulacja", "Tajemnica"],
+        "Biały smok": ["Noc", "Lodowiec", "Przetrwanie", "Gniew"],
+        "Niebieski smok": ["Dzień", "Pustynia", "Dominacja", "Ambicja"],
+      };
+
+      let currentQuestion = 0;
+      let userAnswers = [];
+
+      function showQuestion() {
+        const q = questions[currentQuestion];
+        const questionElement = document.getElementById("question");
+        const answersElement = document.getElementById("answers");
+
+        questionElement.classList.add("fade-out");
+        answersElement.classList.add("fade-out");
+
+        setTimeout(() => {
+          questionElement.textContent = q.question;
+          answersElement.innerHTML = "";
+          q.answers.forEach((answer) => {
+            const btn = document.createElement("button");
+            btn.textContent = answer;
+            btn.classList.add("button", "is-light", "is-fullwidth", "mb-2");
+            btn.onclick = () => {
+              userAnswers.push(answer);
+              nextQuestion();
+            };
+            answersElement.appendChild(btn);
+          });
+
+          questionElement.classList.remove("fade-out");
+          answersElement.classList.remove("fade-out");
+          questionElement.classList.add("fade-in");
+          answersElement.classList.add("fade-in");
+        }, 300);
+      }
+
+      function nextQuestion() {
+        currentQuestion++;
+        if (currentQuestion < questions.length) {
+          document.getElementById("quiz-container").classList.add("fade-out");
+          setTimeout(() => {
+            showQuestion();
+            document
+              .getElementById("quiz-container")
+              .classList.remove("fade-out");
+            document.getElementById("quiz-container").classList.add("fade-in");
+          }, 300);
+        } else {
+          showResult();
+        }
+      }
+
+      function showResult() {
+        let maxScore = 0;
+        let bestMatch = "";
+        for (const [dragon, answers] of Object.entries(results)) {
+          let score = answers.filter((ans) => userAnswers.includes(ans)).length;
+          if (score > maxScore) {
+            maxScore = score;
+            bestMatch = dragon;
+          }
+        }
+        document.getElementById("result").classList.remove("is-hidden");
+        document.getElementById("result-dragon").textContent = `${bestMatch}`;
+        document.getElementById("quiz-container").classList.add("is-hidden");
+      }
+
+      document.getElementById("start-quiz").onclick = () => {
+        document.getElementById("intro").classList.add("is-hidden");
+        document.getElementById("quiz-container").classList.remove("is-hidden");
+        showQuestion();
+      };
+
+      showQuestion();
+    </script>
+  </body>
+</html>
